@@ -56,6 +56,7 @@ if (loginForm) {
 
       // Spara JWT i sessionStorage och gå till skyddad sida
       sessionStorage.setItem("token", data.response.token);
+      sessionStorage.setItem("created", data.response.created);
       window.location.href = "protected.html";
     } catch (err) {
       alert("Fel vid inloggning: " + err.message);

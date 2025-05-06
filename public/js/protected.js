@@ -1,4 +1,5 @@
 const token = sessionStorage.getItem("token");
+const created = sessionStorage.getItem("created");
 
 if (!token) {
   alert("Du måste vara inloggad för att se sidan!");
@@ -17,7 +18,8 @@ fetch("http://127.0.0.1:3000/api/protected", {
     return res.json();
   })
   .then(data => {
-    document.getElementById("data").textContent = data.message;
+    const formattedDate = new Date(created).toLocaleString("sv-SE");
+    document.getElementById("data").textContent = `${data.message} (Ditt konto skapades ${formattedDate})`;
   })
   .catch(err => {
     alert(err.message);
