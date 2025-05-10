@@ -37,6 +37,10 @@ if (registerForm) {
       const data = await response.json();
       registerError.style.color = "green";
       registerError.textContent = "Användare skapad!";
+
+       setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
     } catch (err) {
       registerError.style.color = "red";
       registerError.textContent = "Fel vid registrering: " + err.message;
