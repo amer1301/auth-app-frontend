@@ -3,10 +3,24 @@ const API_BASE = "http://127.0.0.1:3000/api";
 // Hantera registrering
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
+  const registerError = document.getElementById("registerError");
+
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const username = document.getElementById("regUsername").value;
+    registerError.textContent = "";
+
+    const username = document.getElementById("regUsername").value.trim();
     const password = document.getElementById("regPassword").value;
+
+    // validering
+    if (username.length < 3) {
+      registerError.textContent = "Användarnamnet måste vara minst 3 tecken.";
+      return;
+    }
+    if (password.length < 6) {
+      registerError.textContent = "Lösenordet måste vara minst 6 tecken.";
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE}/register`, {
@@ -15,17 +29,17 @@ if (registerForm) {
         body: JSON.stringify({ username, password }),
       });
 
-      // Kolla om svaret är okej (200-299 status)
       if (!response.ok) {
-        const data = await response.json(); // För att läsa felmeddelande från servern
-        throw new Error(data.error || "Registration failed");
+        const data = await response.json();
+        throw new Error(data.error || "Registreringen misslyckades");
       }
 
-      // Om registreringen är framgångsrik
       const data = await response.json();
-      alert("Användare skapad!");
+      registerError.style.color = "green";
+      registerError.textContent = "Användare skapad!";
     } catch (err) {
-      alert("Fel vid registrering: " + err.message);
+      registerError.style.color = "red";
+      registerError.textContent = "Fel vid registrering: " + err.message;
     }
   });
 }
@@ -35,8 +49,21 @@ const loginForm = document.getElementById("loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const username = document.getElementById("loginUsername").value;
+
+    loginError.textContent = "";
+
+    const username = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value;
+
+    // Validering
+     if (username.length < 3) {
+      loginError.textContent = "Användarnamnet måste vara minst 3 tecken.";
+      return;
+    }
+    if (password.length < 6) {
+      loginError.textContent = "Lösenordet måste vara minst 6 tecken.";
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE}/login`, {
@@ -45,13 +72,11 @@ if (loginForm) {
         body: JSON.stringify({ username, password }),
       });
 
-      // Kolla om svaret är okej (200-299 status)
       if (!response.ok) {
-        const data = await response.json(); // För att läsa felmeddelande från servern
-        throw new Error(data.error || "Login failed");
+        const data = await response.json();
+        throw new Error(data.error || "Inloggning misslyckades");
       }
 
-      // Om inloggningen är framgångsrik
       const data = await response.json();
 
       // Spara JWT i sessionStorage och gå till skyddad sida
@@ -59,7 +84,7 @@ if (loginForm) {
       sessionStorage.setItem("created", data.response.created);
       window.location.href = "protected.html";
     } catch (err) {
-      alert("Fel vid inloggning: " + err.message);
+      loginError.textContent = "Fel vid inloggning: " + err.message;
     }
   });
 }

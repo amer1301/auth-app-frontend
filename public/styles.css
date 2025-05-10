@@ -90,3 +90,15 @@ a:hover {
     cursor: pointer;
     transform: scale(1.1);
 }
+
+#logoutBtn {
+  display: flex;
+  justify-content: center;
+  margin: 2em auto;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}

@@ -1,9 +1,10 @@
 const token = sessionStorage.getItem("token");
 const created = sessionStorage.getItem("created");
+const errorEl = document.getElementById("protectedError");
 
 if (!token) {
-  alert("Du måste vara inloggad för att se sidan!");
-  window.location.href = "index.html";
+  errorEl.textContent = "Du måste vara inloggad för att se sidan!";
+  setTimeout(() => (window.location.href = "index.html"), 1500);
 }
 
 fetch("http://127.0.0.1:3000/api/protected", {
@@ -22,6 +23,6 @@ fetch("http://127.0.0.1:3000/api/protected", {
     document.getElementById("data").textContent = `${data.message} (Ditt konto skapades ${formattedDate})`;
   })
   .catch(err => {
-    alert(err.message);
-    window.location.href = "index.html";
+    errorEl.textContent = err.message;
+    setTimeout(() => (window.location.href = "index.html"), 2000);
   });
