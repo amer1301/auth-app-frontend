@@ -26,3 +26,11 @@ fetch("http://127.0.0.1:3000/api/protected", {
     errorEl.textContent = err.message;
     setTimeout(() => (window.location.href = "index.html"), 2000);
   });
+
+  const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", () => {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("created");
+  window.location.href = "index.html";
+});
